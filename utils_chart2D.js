@@ -198,7 +198,7 @@ async function RunPlot2D() {
 
     console.log("MODEL:", model)
 
-    __g_htmlElements["plot_button"].disabled = true;
+    SetControlsLoading(true);
     SetStatusMessage("Loading data from OpenKIM and building hulls…", "loading");
     SetMetaInfo([]);
 
@@ -236,6 +236,6 @@ async function RunPlot2D() {
         __g_htmlElements["svg"].selectAll("*").remove();
     }
     finally {
-        __g_htmlElements["plot_button"].disabled = false;
+        SetControlsLoading(false);
     }
 }

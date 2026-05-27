@@ -94,11 +94,7 @@ __g_htmlElements["clear_model_button"].addEventListener("click", () => {
 
 
 
-// RunPlot2D(); 
-// executing this will trigger the 2D plot upon first load
-// instead i need to execute a RunPlot() and then decide whether RunPlot2D or RunPlot3D() or RunPlot4D()
-// RunPlot() should clear the current plot, toggle the visiblity of the <div>container, and then execute RunPlotND() 
-
+// RunPlot() clears the current plot, toggle the visiblity of the <div>container, and then execute RunPlotND() 
 function RunPlot()
 {
     console.log("RunPlot");
@@ -138,7 +134,7 @@ function RunPlot()
         // __g_htmlElements["svg"].style.display = "none";
         // __g_htmlElements["tooltip_2D"].style.display = "none";
 
-        // run 2D plot
+        // run 3D plot
         RunPlot3D();
     }
 

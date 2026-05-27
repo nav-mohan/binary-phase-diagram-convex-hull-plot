@@ -367,3 +367,10 @@
         grid-template-columns: 1fr;
       }
     }
+
+/* Stabilization overrides */
+#plotContainer2D { position: relative; }
+#plotContainer3D { position: relative; }
+#tooltip3D.tooltip { white-space: normal; }
+.toggle-dimension { display: flex; gap: 12px; align-items: center; color: var(--muted); }
+.toggle-dimension input { width: auto; margin-right: 3px; }

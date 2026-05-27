@@ -1,4 +1,10 @@
+let __g_controls_initialized = false;
+let __g_active_dimension = 3;
+let __g_loading = false;
+
 function PopulateSpeciesDropdown() {
+    if (__g_controls_initialized) return;
+
     for (const el of ELEMENTS) {
         __g_htmlElements["species_dropdown_1"].append(new Option(el, el));
         __g_htmlElements["species_dropdown_2"].append(new Option(el, el));
@@ -6,11 +12,13 @@ function PopulateSpeciesDropdown() {
         __g_htmlElements["species_dropdown_4"].append(new Option(el, el));
     }
     // Set default values upon initialization
-    __g_htmlElements["species_dropdown_1"].value = "Al";
-    __g_htmlElements["species_dropdown_2"].value = "Ni";
-    __g_htmlElements["species_dropdown_3"].value = "Ti";
-    __g_htmlElements["species_dropdown_4"].disabled = true;
-    __g_htmlElements["model_textbox"].value = "EAM_Dynamo_ZhouJohnsonWadley_2004_CuAgAuNiPdPtAlPbFeMoTaWMgCoTiZr__MO_870117231765_001";
+    __g_htmlElements["species_dropdown_1"].value = "Na";
+    __g_htmlElements["species_dropdown_2"].value = "Cl";
+    __g_htmlElements["species_dropdown_3"].value = "O";
+    __g_htmlElements["model_textbox"].value =
+        "Sim_LAMMPS_ReaxFF_BrugnoliMiyataniAkaji_SiCeNaClHO_2023__SM_282799919035_000"
+
+    __g_controls_initialized = true;
 }
 
 function SetStatusMessage(message, kind = "") {
@@ -30,29 +38,47 @@ function SetMetaInfo(lines = []) {
 
 function ToggleDimension(dimension)
 {
-    if(dimension == 2)
-    {
-        __g_htmlElements["species_dropdown_1"].disabled=false;
-        __g_htmlElements["species_dropdown_2"].disabled=false;
-        __g_htmlElements["species_dropdown_3"].disabled=true;
-        __g_htmlElements["species_dropdown_4"].disabled=true;
+    if (__g_loading) return;
+
+    __g_active_dimension = Number(dimension);
+
+    const is2D = __g_active_dimension === 2;
+    const is3D = __g_active_dimension === 3;
+
+    __g_htmlElements["species_dropdown_1"].disabled = false;
+    __g_htmlElements["species_dropdown_2"].disabled = false;
+    __g_htmlElements["species_dropdown_3"].disabled = is2D;
+    __g_htmlElements["species_dropdown_4"].disabled = true;
+
+    __g_htmlElements["plot_container_2D"].style.display = is2D ? "" : "none";
+    __g_htmlElements["plot_container_3D"].style.display = is3D ? "" : "none";
+    __g_htmlElements["top_view_button"].style.display = is3D ? "" : "none";
+    __g_htmlElements["surface_view_button"].style.display = is3D ? "" : "none";
+
+    if (!is2D && !is3D) {
+        SetStatusMessage("A quaternary plot view has not been implemented.", "error");
     }
 
-    if(dimension == 3)
-    {
-        __g_htmlElements["species_dropdown_1"].disabled=false;
-        __g_htmlElements["species_dropdown_2"].disabled=false;
-        __g_htmlElements["species_dropdown_3"].disabled=false;
-        __g_htmlElements["species_dropdown_4"].disabled=true;
-    }
-
-    if(dimension == 4)
-    {
-        __g_htmlElements["species_dropdown_1"].disabled=false;
-        __g_htmlElements["species_dropdown_2"].disabled=false;
-        __g_htmlElements["species_dropdown_3"].disabled=false;
-        __g_htmlElements["species_dropdown_4"].disabled=false;
+    if (is3D && typeof window.resizeTernaryPlot === "function") {
+        requestAnimationFrame(() => window.resizeTernaryPlot());
     }
 }
 
+function SetControlsLoading(loading) {
+    __g_loading = loading;
+    __g_htmlElements["plot_button"].disabled = loading;
+    __g_htmlElements["model_textbox"].disabled = loading;
 
+    document.querySelectorAll('input[name="toggle-dimension"]').forEach((radio) => {
+        radio.disabled = loading || radio.value === "4";
+    });
+
+    if (loading) {
+        __g_htmlElements["species_dropdown_1"].disabled = true;
+        __g_htmlElements["species_dropdown_2"].disabled = true;
+        __g_htmlElements["species_dropdown_3"].disabled = true;
+        __g_htmlElements["species_dropdown_4"].disabled = true;
+    } else {
+        ToggleDimension(__g_active_dimension);
+    }
+}
