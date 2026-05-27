@@ -5,8 +5,9 @@
  * @returns {Object} {hull_points, prototype_labels, monospecies_min_energy_idx, records_length}
  */
 async function GetFormationEnergies(species_list, model = null) {
-    if (species_list[0] === species_list[1]) {
-        throw new Error("Choose two different elements.");
+    console.log("GetFormationEnergyies",species_list);
+    if (species_list.length != new Set(species_list).size){
+        throw new Error(`Choose ${species_list.length} different elements`);
     }
 
     /** 
@@ -51,8 +52,16 @@ async function GetFormationEnergies(species_list, model = null) {
         hull_points[i] = [...mole_fraction, formation_energy_per_atom];
     };
 
+    const clean_points = [];
+    const clean_labels = [];
+    for (let i = 0; i < hull_points.length; i++) {
+        if (!hull_points[i]) continue;
+        clean_points.push(hull_points[i]);
+        clean_labels.push(prototype_labels[i]);
+    }
+
     const records_length = records.length;
-    return { hull_points, prototype_labels, monospecies_min_energy_idx, records_length };
+    return { hull_points:clean_points, prototype_labels:clean_labels, monospecies_min_energy_idx, records_length };
 }
 
 /**
@@ -76,11 +85,81 @@ function PrototypeLabelsForPolygonPoints(records_points, records_prototype_label
     return point_labels;
 }
 
-__g_htmlElements["plot_button"].addEventListener("click", RunPlot2D);
+__g_htmlElements["plot_button"].addEventListener("click", RunPlot);
 __g_htmlElements["clear_model_button"].addEventListener("click", () => {
     __g_htmlElements["model_textbox"].value = "";
     SetStatusMessage("Model field cleared.", "");
 });
 
-PopulateSpeciesDropdown();
-RunPlot2D();
+
+
+
+// RunPlot2D(); 
+// executing this will trigger the 2D plot upon first load
+// instead i need to execute a RunPlot() and then decide whether RunPlot2D or RunPlot3D() or RunPlot4D()
+// RunPlot() should clear the current plot, toggle the visiblity of the <div>container, and then execute RunPlotND() 
+
+function RunPlot()
+{
+    console.log("RunPlot");
+    
+    // Display 2D plot
+    if(__g_htmlElements["species_dropdown_3"].disabled && __g_htmlElements["species_dropdown_4"].disabled)
+    {
+        // hide 3D plot
+        __g_htmlElements["plot_container_3D"].style.display = "none";
+        // __g_htmlElements["label_layer"].style.display = "none";
+        // __g_htmlElements["tooltip_3D"].style.display = "none";
+        // __g_htmlElements["top_view_button"].style.display = "none";
+        // __g_htmlElements["surface_view_button"].style.display = "none";
+
+        // show 2D plot
+        __g_htmlElements["plot_container_2D"].style.display = "";
+        // __g_htmlElements["svg"].style.display = "";
+        // __g_htmlElements["tooltip_2D"].style.display = "";
+
+        // run 2D plot
+        RunPlot2D();
+    }
+    
+    // Display 3D plot
+    else if(!__g_htmlElements["species_dropdown_3"].disabled && __g_htmlElements["species_dropdown_4"].disabled)
+    {
+
+        // show 3D plot
+        __g_htmlElements["plot_container_3D"].style.display = "";
+        // __g_htmlElements["label_layer"].style.display = "";
+        // __g_htmlElements["tooltip_3D"].style.display = "";
+        // __g_htmlElements["top_view_button"].style.display = "";
+        // __g_htmlElements["surface_view_button"].style.display = "";
+
+        // hide 2D plot
+        __g_htmlElements["plot_container_2D"].style.display = "none";
+        // __g_htmlElements["svg"].style.display = "none";
+        // __g_htmlElements["tooltip_2D"].style.display = "none";
+
+        // run 2D plot
+        RunPlot3D();
+    }
+
+    // Display 4D plot
+    else if(!__g_htmlElements["species_dropdown_3"].disabled && !__g_htmlElements["species_dropdown_4"].disabled)
+    {
+
+        // show 3D plot
+        __g_htmlElements["plot_container"].style.display = "none";
+        // __g_htmlElements["label_layer"].style.display = "none";
+        // __g_htmlElements["tooltip3D"].style.display = "none";
+        // __g_htmlElements["top_view_button"].style.display = "none";
+        // __g_htmlElements["surface_view_button"].style.display = "none";
+
+        // hide 2D plot
+        __g_htmlElements["plot_container_2D"].style.display = "none";
+        // __g_htmlElements["svg"].style.display = "none";
+        // __g_htmlElements["tooltip_2D"].style.display = "none";
+
+        // run 4D plot
+        // RunPlot4D();
+    }
+
+}

@@ -1,6 +1,6 @@
 
 function ShowTooltip2D(event, html) {
-    __g_htmlElements["tooltip"]
+    __g_htmlElements["tooltip_2D"]
         .style("opacity", 1)
         .html(html)
         .style("left", `${event.offsetX + 12}px`)
@@ -8,13 +8,13 @@ function ShowTooltip2D(event, html) {
 }
 
 function MoveTooltip2D(event) {
-    __g_htmlElements["tooltip"]
+    __g_htmlElements["tooltip_2D"]
         .style("left", `${event.offsetX + 12}px`)
         .style("top", `${event.offsetY - 12}px`);
 }
 
 function HideTooltip2D() {
-    __g_htmlElements["tooltip"].style("opacity", 0);
+    __g_htmlElements["tooltip_2D"].style("opacity", 0);
 }
 
 function MakePointTooltip2D(d) {
@@ -189,6 +189,7 @@ function DrawPlot2D(species, model, rd, mo = null) {
 }
 
 async function RunPlot2D() {
+    console.log("RunPlot2D");
     const species = [
         __g_htmlElements["species_dropdown_1"].value, 
         __g_htmlElements["species_dropdown_2"].value,
@@ -196,11 +197,6 @@ async function RunPlot2D() {
     const model = __g_htmlElements["model_textbox"].value.trim();
 
     console.log("MODEL:", model)
-
-    if (species[0] === species[1]) {
-        SetStatusMessage("Pick three different elements.", "error");
-        return;
-    }
 
     __g_htmlElements["plot_button"].disabled = true;
     SetStatusMessage("Loading data from OpenKIM and building hulls…", "loading");

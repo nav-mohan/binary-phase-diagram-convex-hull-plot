@@ -3,261 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Binary Convex Hull Explorer</title>
+  <title>Ternary Gibbs Triangle Explorer</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <style>
-    :root {
-      --bg: #f7f7f8;
-      --panel: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --border: #d1d5db;
-      --accent: #2563eb;
-      --danger: #b91c1c;
-      --ok: #065f46;
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.184.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.184.0/examples/jsm/"
     }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    .page {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-
-    h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
-    }
-
-    .subtext {
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-    }
-
-    .controls {
-      display: grid;
-      gap: 14px;
-    }
-
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    select, input, button {
-      width: 100%;
-      font: inherit;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      background: white;
-    }
-
-    button {
-      background: var(--accent);
-      color: white;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .secondary {
-      background: white;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .hint {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .status {
-      min-height: 24px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .status.error { color: var(--danger); }
-    .status.ok { color: var(--ok); }
-    .status.loading { color: var(--accent); }
-
-    .plot-wrap {
-      overflow: auto;
-      position: relative;
-    }
-
-    svg {
-      width: 100%;
-      height: auto;
-      min-height: 680px;
-      display: block;
-    }
-
-    .axis path, .axis line {
-      stroke: #4b5563;
-    }
-
-    .hull-rd {
-      fill: none;
-      stroke: #c026d3;
-      stroke-width: 2.2;
-      stroke-dasharray: 7 4;
-    }
-
-    .hull-model {
-      fill: none;
-      stroke: #111827;
-      stroke-width: 2.2;
-    }
-
-    .pt-rd {
-      fill: #c026d3;
-    }
-
-    .pt-model {
-      fill: #111827;
-    }
-
-    .stable-correct {
-      fill: #2563eb;
-      stroke: #111827;
-      stroke-width: 0.8;
-    }
-
-    .stable-incorrect {
-      fill: #dc2626;
-      stroke: #111827;
-      stroke-width: 0.8;
-    }
-
-    .legend-title {
-      font-weight: 700;
-    }
-
-    .meta {
-      display: grid;
-      gap: 8px;
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-      font-size: 14px;
-    }
-
-    .tooltip {
-      position: absolute;
-      pointer-events: none;
-      opacity: 0;
-      background: rgba(17, 24, 39, 0.95);
-      color: white;
-      padding: 8px 10px;
-      border-radius: 10px;
-      font-size: 12px;
-      line-height: 1.35;
-      max-width: 260px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-      transform: translate(10px, -10px);
-      transition: opacity 120ms ease;
-      z-index: 10;
-      white-space: normal;
-    }
-
-    code {
-      background: #f3f4f6;
-      padding: 2px 6px;
-      border-radius: 6px;
-    }
-
-    @media (max-width: 900px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  }
+  </script>
 </head>
 <body>
   <div class="page">
-    <h1>Binary Convex Hull Explorer</h1>
-    <div class="subtext">Select two elements, optionally add an OpenKIM model ID, and compare the model hull against reference data.</div>
-
+    <h1>Ternary Gibbs Triangle Explorer</h1>
+    <div class="subtext">Plot formation energies and lower convex-hull facets for a three-component system.</div>
     <div class="layout">
       <div class="panel">
         <div class="controls">
-          <div class="row">
+          <div class="toggle-dimension">
+            <input type="radio" name="toggle-dimension" value=2 onclick="ToggleDimension(this.value)"> 2D
+            <input type="radio" name="toggle-dimension" value=3 onclick="ToggleDimension(this.value)" checked> 3D
+            <input type="radio" name="toggle-dimension" value=4 onclick="ToggleDimension(this.value)"> 4D
+          </div>
+          <div class="species-row">
             <div>
-              <label for="species1">Element 1</label>
+              <label for="species1">A</label>
               <select id="species1"></select>
             </div>
             <div>
-              <label for="species2">Element 2</label>
+              <label for="species2">B</label>
               <select id="species2"></select>
             </div>
             <div>
-              <label for="species3">Element 3</label>
+              <label for="species3">C</label>
               <select id="species3"></select>
             </div>
-
+            <div>
+              <label for="species4">D</label>
+              <select id="species4"></select>
+            </div>
           </div>
-
           <div>
             <label for="model">Model ID (optional)</label>
-            <input id="model" type="text" placeholder="e.g. LJ_ElliottAkerson_2015_Universal__MO_959249795837_003" />
+            <input id="model" type="text" placeholder="OpenKIM model ID" />
           </div>
-
           <div class="row">
-            <button id="plotBtn">Plot Hulls</button>
-            <button id="clearModelBtn" class="secondary">Clear Model</button>
+            <button id="plotBtn">Plot hull</button>
+            <button id="clearModelBtn" class="secondary">Clear model</button>
           </div>
-
-          <div class="hint">
-            Leave the model field blank to inspect reference-data behavior only. When a model is provided, the black hull is the model and the dashed magenta hull is reference data.
+          <div class="row">
+            <button id="topViewBtn" class="secondary">Top view</button>
+            <button id="surfaceViewBtn" class="secohintndary">Energy view</button>
           </div>
-
           <div id="status" class="status"></div>
-
           <div class="meta" id="meta"></div>
         </div>
       </div>
-
-      <div class="panel plot-wrap">
-        <svg id="plot" viewBox="0 0 900 680" preserveAspectRatio="xMidYMid meet"></svg>
-        <div id="tooltip" class="tooltip"></div>
+      <div class="panel plot-panel">
+        <div id="plotContainer2D">
+          <svg id="plot2D" viewBox="0 0 900 680" preserveAspectRatio="xMidYMid meet"></svg>
+          <div id="tooltip2D" class="tooltip2D"></div>
+        </div>
+        <div id="plotContainer3D">
+          <div id="labelLayer"></div>
+          <div id="tooltip3D" class="tooltip3D"></div>
+        </div>
+        <div class="legend">
+          <span><span class="swatch" style="background:#c026d3"></span>Reference lower hull</span>
+          <span><span class="swatch" style="background:#111827"></span>Model lower hull</span>
+          <span><span class="swatch" style="background:#2563eb"></span>Stable point</span>
+        </div>
       </div>
     </div>
   </div>
@@ -267,7 +84,8 @@
   <script src="utils_apiQuery.js"></script>
   <script src="utils_compute2D.js"></script>
   <script src="utils_chart2D.js"></script>
+  <script type="module" src="ternary_app.js"></script>
   <script src="script.js"></script>
-
+  <script>window.addEventListener('load',(event)=>{PopulateSpeciesDropdown();})</script>
 </body>
 </html>

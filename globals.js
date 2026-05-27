@@ -13,18 +13,28 @@ const ELEMENTS = [
 const __g_apiBaseUrl = "https://query.openkim.org/api";
 
 const __g_htmlElements = {
-    "species_dropdown_1" : document.getElementById("species1"),
-    "species_dropdown_2" : document.getElementById("species2"),
-    "species_dropdown_3" : document.getElementById("species3"),
-    "model_textbox" : document.getElementById("model"),
-    "plot_button" : document.getElementById("plotBtn"),
-    "clear_model_button" : document.getElementById("clearModelBtn"),
-    "status_textbox" : document.getElementById("status"),
-    "meta_textbox" : document.getElementById("meta"),
-    "svg" : d3.select("#plot"),
-    "tooltip" : d3.select("#tooltip"),
-};
+    "species_dropdown_1": document.getElementById("species1"),
+    "species_dropdown_2": document.getElementById("species2"),
+    "species_dropdown_3": document.getElementById("species3"),
+    "species_dropdown_4": document.getElementById("species4"),
+    "model_textbox": document.getElementById("model"),
+    "plot_button": document.getElementById("plotBtn"),
+    "clear_model_button": document.getElementById("clearModelBtn"),
+    "status_textbox": document.getElementById("status"),
+    "meta_textbox": document.getElementById("meta"),
 
+    // 2D plot 
+    "plot_container_2D" : document.getElementById("plotContainer2D"),
+    "svg" : d3.select("#plot2D"),
+    "tooltip_2D": d3.select("#tooltip2D"),
+
+    // 3D plot 
+    "plot_container_3D": document.getElementById("plotContainer3D"),
+    "label_layer": document.getElementById("labelLayer"),
+    "tooltip_3D": document.getElementById("tooltip3D"),
+    "top_view_button": document.getElementById("topViewBtn"),
+    "surface_view_button": document.getElementById("surfaceViewBtn"),
+};
 
 const __g_query_template = {
     "meta.type":"XX", // tr OR rd. if no model then rd. else tr
