@@ -33,7 +33,6 @@ const __g_htmlElements = {
     "label_layer": document.getElementById("labelLayer"),
     "tooltip_3D": document.getElementById("tooltip3D"),
     "top_view_button": document.getElementById("topViewBtn"),
-    "surface_view_button": document.getElementById("surfaceViewBtn"),
 };
 
 const __g_query_template = {

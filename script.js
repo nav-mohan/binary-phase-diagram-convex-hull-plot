@@ -107,7 +107,6 @@ function RunPlot()
         // __g_htmlElements["label_layer"].style.display = "none";
         // __g_htmlElements["tooltip_3D"].style.display = "none";
         // __g_htmlElements["top_view_button"].style.display = "none";
-        // __g_htmlElements["surface_view_button"].style.display = "none";
 
         // show 2D plot
         __g_htmlElements["plot_container_2D"].style.display = "";
@@ -127,7 +126,6 @@ function RunPlot()
         // __g_htmlElements["label_layer"].style.display = "";
         // __g_htmlElements["tooltip_3D"].style.display = "";
         // __g_htmlElements["top_view_button"].style.display = "";
-        // __g_htmlElements["surface_view_button"].style.display = "";
 
         // hide 2D plot
         __g_htmlElements["plot_container_2D"].style.display = "none";
@@ -147,7 +145,6 @@ function RunPlot()
         // __g_htmlElements["label_layer"].style.display = "none";
         // __g_htmlElements["tooltip3D"].style.display = "none";
         // __g_htmlElements["top_view_button"].style.display = "none";
-        // __g_htmlElements["surface_view_button"].style.display = "none";
 
         // hide 2D plot
         __g_htmlElements["plot_container_2D"].style.display = "none";

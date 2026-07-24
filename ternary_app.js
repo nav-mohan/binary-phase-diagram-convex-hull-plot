@@ -415,7 +415,7 @@ function ShowTopView() {
     PositionTriangleVertexLabels();
 }
 
-function ShowEnergyView() {
+function ShowInitialView() {
     camera.position.set(12, -14, 12);
     camera.up.set(0, 1, 0);
     controls.target.set(0, 0, -1);
@@ -505,10 +505,9 @@ function Animate() {
 
 BuildBaseTriangle();
 UpdateTriangleVertexLabels();
-ShowEnergyView();
+ShowInitialView();
 
 __g_htmlElements["top_view_button"].addEventListener("click", ShowTopView);
-__g_htmlElements["surface_view_button"].addEventListener("click", ShowEnergyView);
 new ResizeObserver(Resize).observe(__g_htmlElements["plot_container_3D"]);
 
 window.RunPlot3D = RunPlot3D;

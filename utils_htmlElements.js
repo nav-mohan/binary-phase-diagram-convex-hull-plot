@@ -53,7 +53,6 @@ function ToggleDimension(dimension)
     __g_htmlElements["plot_container_2D"].style.display = is2D ? "" : "none";
     __g_htmlElements["plot_container_3D"].style.display = is3D ? "" : "none";
     __g_htmlElements["top_view_button"].style.display = is3D ? "" : "none";
-    __g_htmlElements["surface_view_button"].style.display = is3D ? "" : "none";
 
     if (!is2D && !is3D) {
         SetStatusMessage("A quaternary plot view has not been implemented.", "error");

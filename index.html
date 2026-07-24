@@ -25,7 +25,7 @@
           <div class="toggle-dimension">
             <input type="radio" name="toggle-dimension" value=2 onclick="ToggleDimension(this.value)"> 2D
             <input type="radio" name="toggle-dimension" value=3 onclick="ToggleDimension(this.value)" checked> 3D
-            <input type="radio" name="toggle-dimension" value="4" disabled title="Not implemented yet"> 4D
+            <!-- <input type="radio" name="toggle-dimension" value="4" disabled title="Not implemented yet"> 4D -->
           </div>
           <div class="species-row">
             <div>
@@ -40,7 +40,7 @@
               <label for="species3">C</label>
               <select id="species3"></select>
             </div>
-            <div>
+            <div style = "display:none">
               <label for="species4">D</label>
               <select id="species4"></select>
             </div>
@@ -55,7 +55,6 @@
           </div>
           <div class="row">
             <button id="topViewBtn" class="secondary">Top view</button>
-            <button id="surfaceViewBtn" class="secondary">Energy view</button>
           </div>
           <div id="status" class="status"></div>
           <div class="meta" id="meta"></div>
