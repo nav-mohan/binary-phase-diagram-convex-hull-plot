@@ -16,64 +16,62 @@
   </script>
 </head>
 <body>
-  <div class="page">
-    <h1>Ternary Gibbs Triangle Explorer</h1>
-    <div class="subtext">Plot formation energies and lower convex-hull facets for a three-component system.</div>
-    <div class="layout">
-      <div class="panel">
-        <div class="controls">
-          <div class="toggle-dimension">
-            <input type="radio" name="toggle-dimension" value=2 onclick="ToggleDimension(this.value)"> 2D
-            <input type="radio" name="toggle-dimension" value=3 onclick="ToggleDimension(this.value)" checked> 3D
-            <!-- <input type="radio" name="toggle-dimension" value="4" disabled title="Not implemented yet"> 4D -->
-          </div>
-          <div class="species-row">
-            <div>
-              <label for="species1">A</label>
-              <select id="species1"></select>
-            </div>
-            <div>
-              <label for="species2">B</label>
-              <select id="species2"></select>
-            </div>
-            <div>
-              <label for="species3">C</label>
-              <select id="species3"></select>
-            </div>
-            <div style = "display:none">
-              <label for="species4">D</label>
-              <select id="species4"></select>
-            </div>
+  <h1>Ternary Gibbs Triangle Explorer</h1>
+  <div class="subtext">Plot formation energies and lower convex-hull facets for a three-component system.</div>
+  <div class="layout">
+    <div class="control-panel">
+      <div class="controls">
+        <div class="toggle-dimension">
+          <input type="radio" name="toggle-dimension" value=2 onclick="ToggleDimension(this.value)"> 2D
+          <input type="radio" name="toggle-dimension" value=3 onclick="ToggleDimension(this.value)" checked> 3D
+          <!-- <input type="radio" name="toggle-dimension" value="4" disabled title="Not implemented yet"> 4D -->
+        </div>
+        <div class="species-row">
+          <div>
+            <label for="species1">A</label>
+            <select id="species1"></select>
           </div>
           <div>
-            <label for="model">Model ID (optional)</label>
-            <input id="model" type="text" placeholder="OpenKIM model ID" />
+            <label for="species2">B</label>
+            <select id="species2"></select>
           </div>
-          <div class="row">
-            <button id="plotBtn">Plot hull</button>
-            <button id="clearModelBtn" class="secondary">Clear model</button>
+          <div>
+            <label for="species3">C</label>
+            <select id="species3"></select>
           </div>
-          <div class="row">
-            <button id="topViewBtn" class="secondary">Top view</button>
+          <div style = "display:none">
+            <label for="species4">D</label>
+            <select id="species4"></select>
           </div>
-          <div id="status" class="status"></div>
-          <div class="meta" id="meta"></div>
+        </div>
+        <div>
+          <label for="model">Model ID (optional)</label>
+          <input id="model" type="text" placeholder="OpenKIM model ID" />
+        </div>
+        <div class="row">
+          <button id="plotBtn">Plot hull</button>
+          <button id="clearModelBtn" class="secondary">Clear model</button>
+          <button id="topViewBtn" class="secondary">Top view</button>
         </div>
       </div>
-      <div class="panel plot-panel">
-        <div id="plotContainer2D">
-          <svg id="plot2D" viewBox="0 0 900 680" preserveAspectRatio="xMidYMid meet"></svg>
-          <div id="tooltip2D" class="tooltip2D"></div>
-        </div>
-        <div id="plotContainer3D">
-          <div id="labelLayer"></div>
-          <div id="tooltip3D" class="tooltip"></div>
-        </div>
-        <div class="legend">
-          <span><span class="swatch" style="background:#c026d3"></span>Reference lower hull</span>
-          <span><span class="swatch" style="background:#111827"></span>Model lower hull</span>
-          <span><span class="swatch" style="background:#2563eb"></span>Stable point</span>
-        </div>
+      <div class="status-meta">
+        <div id="status" class="status"></div>
+        <div class="meta" id="meta"></div>
+      </div>
+    </div>
+    <div class="plot-panel">
+      <div id="plotContainer2D">
+        <svg id="plot2D" viewBox="0 0 900 680" preserveAspectRatio="xMidYMid meet"></svg>
+        <div id="tooltip2D" class="tooltip2D"></div>
+      </div>
+      <div id="plotContainer3D">
+        <div id="labelLayer"></div>
+        <div id="tooltip3D" class="tooltip"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#c026d3"></span>Reference lower hull</span>
+        <span><span class="swatch" style="background:#111827"></span>Model lower hull</span>
+        <span><span class="swatch" style="background:#2563eb"></span>Stable point</span>
       </div>
     </div>
   </div>
