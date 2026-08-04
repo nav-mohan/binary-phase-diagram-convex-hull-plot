@@ -55,7 +55,8 @@ h1 {
 }
 
 .plot-panel {
-    width: 100%;
+    /* width: 100%; */
+    min-width: 50vw;
     padding: 0.5em;
     overflow: hidden;
 }
@@ -336,9 +337,6 @@ code {
         width: 100%;
         min-width: 0;
         flex: none;
-    }
-
-    .plot-panel {
         padding: 10px;
     }
 
@@ -380,4 +378,38 @@ code {
     .vertex-label {
         font-size: 13px;
     }
+}
+
+
+
+.stable-incorrect{
+    fill: red;
+    stroke-width: 0.7;
+    stroke: pink;
+}
+
+.stable-correct{
+    fill: yellow;
+    stroke-width: 0.7;
+    stroke: green;
+}
+
+.pt-model{
+    fill: red;
+}
+.hull-model{
+    fill:none;
+    stroke:red;
+}
+
+.pt-rd{
+    fill:green;
+}
+.hull-rd{
+    fill: none;
+    stroke: green;
+}
+
+.axis path .axis line{
+    stroke:red;
 }
