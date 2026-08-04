@@ -6,7 +6,7 @@
  */
 function PrepareQuery(species_list, model)
 {
-    let query = { ...__g_query_template };
+    const query = structuredClone(__g_query_template);
     query["stoichiometric-species.source-value"]["$not"]["$elemMatch"]["$nin"] = (species_list);
     if (model === null || model === "") {
         query["meta.type"] = "rd"
