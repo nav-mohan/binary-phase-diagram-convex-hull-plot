@@ -156,3 +156,285 @@ function RunPlot()
     }
 
 }
+
+async function RenderThumbnail (model,species_list) {
+    // Set model
+    document.getElementById("model").value = model;
+    const dimension = species_list.length;
+
+    // Set species
+    document.getElementById("species1").value = species_list[0] ?? "";
+    document.getElementById("species2").value = species_list[1] ?? "";
+    document.getElementById("species3").value = species_list[2] ?? "";
+
+    // Select dimension
+    const radio = document.querySelector(
+        `input[name="toggle-dimension"][value="${dimension}"]`
+    );
+
+    if (radio) {
+        radio.checked = true;
+    }
+
+    ToggleDimension(dimension);
+
+    // Render
+    if (dimension === 2) {
+        await RunPlot2D();
+    } else if (dimension === 3) {
+        await RunPlot3D();
+
+        // Optional:
+        ShowTopView();
+    }
+};
+
+function GetCombinations(array, k) {
+    const result = [];
+
+    function recurse(start, current) {
+        if (current.length === k) {
+            result.push([...current]);
+            return;
+        }
+
+        for (let i = start; i < array.length; i++) {
+            current.push(array[i]);
+            recurse(i + 1, current);
+            current.pop();
+        }
+    }
+
+    recurse(0, []);
+
+    return result;
+}
+
+async function FindBestCombination(model){
+    const supported_species = GetModelSupportedSpecies(model);
+
+    let best_combination = [];
+    if (supported_species.length == 2) {best_combination = supported_species}
+    if (supported_species.length == 3) {best_combination = supported_species}
+    if (supported_species.length > 3)
+    {
+        const combinations = GetCombinations(supported_species,3);
+        for (const c of combinations)
+        {
+            const gf = await GetFormationEnergies(c,model);
+            // console.log(c,gf)
+            if (gf.hull_points.length > best_combination.length){best_combination = c}
+        }
+    }
+    return best_combination;
+}
+
+function GetModelSupportedSpecies(modelName) {
+  // Step 1: Clean the name to easily isolate the middle sections
+  // Removes the prefix 'Sim_LAMMPS_' and the suffix starting with '__SM_'
+  const core = modelName.replace(/^Sim_LAMMPS_[^_]+_[^_]+_/, '').split('__SM_')[0];
+  
+  // Step 2: Split the remaining parts by underscores
+  const parts = core.split('_');
+  
+  // Step 3: Identify the chemical formula part
+  // The species string contains text but is NOT a 4-digit year
+  const formula = parts.find(part => isNaN(part) || part.length !== 4);
+  
+  if (!formula) return [];
+
+  // Step 4: Match individual chemical elements (e.g., 'Si', 'Ce', 'Na', 'Cl', 'H', 'O')
+  // This matches a capital letter followed by any lowercase letters
+  return formula.match(/[A-Z][a-z]*/g) || [];
+}
+
+// --- Test Cases ---
+const examples = [
+  "Sim_LAMMPS_ReaxFF_BrugnoliMiyataniAkaji_SiCeNaClHO_2023__SM_282799919035_000",
+  "Sim_LAMMPS_ReaxFF_BroqvistKullgrenWolf_2015_CeO__SM_063950220736_000",
+  "Sim_LAMMPS_ReaxFF_AryanpourVanDuinKubicki_2010_FeHO__SM_222964216001_001",
+  "Sim_LAMMPS_CoreShell_MitchellFincham_1993_NaCl__SM_672022050407_000"
+];
+
+async function ExportPlotAsPNG(filename = "phase-diagram.png",plotType = "auto") {
+    let container;
+
+    if (plotType === "2d") {
+        container = document.getElementById("plotContainer2D");
+    }
+    else if (plotType === "3d") {
+        container = document.getElementById("plotContainer3D");
+    }
+    else {
+        /*
+         * Automatically determine which plot is visible.
+         */
+        const plot2D = document.getElementById("plotContainer2D");
+        const plot3D = document.getElementById("plotContainer3D");
+
+        const visible = element => {
+            if (!element) return false;
+
+            const style =
+                window.getComputedStyle(element);
+
+            return (
+                style.display !== "none" &&
+                style.visibility !== "hidden" &&
+                element.offsetWidth > 0 &&
+                element.offsetHeight > 0
+            );
+        };
+
+        if (visible(plot3D)) {
+            container = plot3D;
+        }
+        else if (visible(plot2D)) {
+            container = plot2D;
+        }
+    }
+
+    if (!container) {
+        throw new Error(
+            "Could not find a visible plot container."
+        );
+    }
+
+    /*
+     * Make sure the browser has finished rendering
+     * before taking the snapshot.
+     */
+    await new Promise(resolve => {
+        requestAnimationFrame(() => {
+            requestAnimationFrame(resolve);
+        });
+    });
+
+    const canvas = await html2canvas(container, {
+        backgroundColor: "#ffffff",
+
+        /*
+         * Increase this for higher-resolution thumbnails.
+         */
+        scale: 2,
+
+        /*
+         * Capture the complete container.
+         */
+        width: container.clientWidth,
+        height: container.clientHeight,
+
+        /*
+         * Avoid capturing anything outside the plot.
+         */
+        x: 0,
+        y: 0,
+
+        logging: false
+    });
+
+    /*
+     * Convert canvas → PNG.
+     */
+    const dataURL =
+        canvas.toDataURL("image/png");
+
+    /*
+     * Trigger browser download.
+     */
+    const link =
+        document.createElement("a");
+
+    link.download = filename;
+    link.href = dataURL;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    return dataURL;
+}
+
+async function GenerateAndExportThumbnail(model) {
+    console.log("GenerateAndExportThumbnail:", model);
+
+    /*
+     * ------------------------------------------------------------
+     * 1. Determine which species the model supports
+     * ------------------------------------------------------------
+     */
+    const supported_species = GetModelSupportedSpecies(model);
+
+    if (supported_species.length < 2) {
+        throw new Error(`Model must support at least 2 species. Found: ${supported_species.join(", ")}`);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     * 2. Determine the species combination to plot
+     * ------------------------------------------------------------
+     */
+    const species_list = await FindBestCombination(model);
+
+    if (species_list.length < 2) {throw new Error(`Could not find a suitable species combination for model: ${model}`);}
+
+    console.log("Selected species:", species_list);
+
+    /*
+     * ------------------------------------------------------------
+     * 3. Populate the UI
+     * ------------------------------------------------------------
+     */
+    document.getElementById("model").value = model;
+    document.getElementById("species1").value = species_list[0] ?? "";
+    document.getElementById("species2").value = species_list[1] ?? "";
+    document.getElementById("species3").value = species_list[2] ?? "";
+
+    /*
+     * ------------------------------------------------------------
+     * 4. Select dimensionality
+     * ------------------------------------------------------------
+     */
+    const dimension = species_list.length;
+
+    const radio = document.querySelector(`input[name="toggle-dimension"][value="${dimension}"]`);
+
+    if (!radio) {throw new Error(`Could not find dimension selector for ${dimension}D`);}
+
+    radio.checked = true;
+
+    ToggleDimension(dimension);
+
+    /*
+     * ------------------------------------------------------------
+     * 5. Render the plot
+     * ------------------------------------------------------------
+     */
+    if (dimension === 2) {
+        await RunPlot2D();
+    }
+    else if (dimension === 3) {
+        await RunPlot3D();
+        ShowTopView();
+    }
+    else {
+        throw new Error(`Unsupported thumbnail dimension: ${dimension}`);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     * 6. Export rendered plot
+     * ------------------------------------------------------------
+     */
+    const plotType = dimension === 2 ? "2d" : "3d";
+
+    const filename = model + '_'+species_list.join('-');
+    const dataURL = await ExportPlotAsPNG(filename,plotType);
+
+    return {
+        model,
+        species_list,
+        dimension,
+        dataURL
+    };
+}
