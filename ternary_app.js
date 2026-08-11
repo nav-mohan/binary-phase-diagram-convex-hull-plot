@@ -407,9 +407,9 @@ async function RunPlot3D() {
 }
 
 function ShowTopView() {
-    camera.position.set(0, 0, 18);
+    camera.position.set(0, 1, 15);
     camera.up.set(0, 1, 0);
-    controls.target.set(0, 0, 0);
+    controls.target.set(0, 1, 0);
     camera.lookAt(controls.target);
     controls.update();
     PositionTriangleVertexLabels();
@@ -512,6 +512,7 @@ new ResizeObserver(Resize).observe(__g_htmlElements["plot_container_3D"]);
 
 window.RunPlot3D = RunPlot3D;
 window.resizeTernaryPlot = Resize;
+window.ShowTopView = ShowTopView;
 
 Resize();
 Animate();
