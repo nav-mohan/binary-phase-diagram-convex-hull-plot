@@ -356,7 +356,30 @@ async function ExportPlotAsPNG(filename = "phase-diagram.png",plotType = "auto")
 }
 
 async function GenerateAndExportThumbnail(model) {
-    console.log("GenerateAndExportThumbnail:", model);
+
+    const species_list = await GenerateBestHull(model);
+    const dimension = species_list.length
+    /*
+     * ------------------------------------------------------------
+     * 6. Export rendered plot
+     * ------------------------------------------------------------
+     */
+    const plotType = dimension === 2 ? "2d" : "3d";
+
+    const filename = model + '_'+species_list.join('-');
+    const dataURL = await ExportPlotAsPNG(filename,plotType);
+
+    return {
+        model,
+        species_list,
+        dimension,
+        dataURL
+    };
+}
+
+
+async function GenerateBestHull(model){
+    console.log("GenerateBestHull:", model);
 
     /*
      * ------------------------------------------------------------
@@ -420,21 +443,6 @@ async function GenerateAndExportThumbnail(model) {
     else {
         throw new Error(`Unsupported thumbnail dimension: ${dimension}`);
     }
+    return species_list;
 
-    /*
-     * ------------------------------------------------------------
-     * 6. Export rendered plot
-     * ------------------------------------------------------------
-     */
-    const plotType = dimension === 2 ? "2d" : "3d";
-
-    const filename = model + '_'+species_list.join('-');
-    const dataURL = await ExportPlotAsPNG(filename,plotType);
-
-    return {
-        model,
-        species_list,
-        dimension,
-        dataURL
-    };
 }
