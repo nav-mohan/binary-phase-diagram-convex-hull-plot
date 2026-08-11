@@ -86,10 +86,17 @@ h1 {
     gap: 14px;
     border: 1px solid rebeccapurple;
     width: 50%;
+    field-sizing: content;
+    padding: 1em;
+
 }
 .status-meta{
-    border: 1px solid red;
+    border: 1px solid rebeccapurple;
+    /* border: 1px solid red; */
     width: 50%;
+    field-sizing: content;
+    overflow: hidden;
+    padding: 1em;
 }
 
 .species-row {
@@ -125,6 +132,9 @@ button {
 select,
 input {
     color: var(--text);
+    width: 100%;
+    field-sizing: content;
+
 }
 
 button {
