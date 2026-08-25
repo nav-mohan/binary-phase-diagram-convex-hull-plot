@@ -55,10 +55,12 @@ h1 {
 }
 
 .plot-panel {
-    /* width: 100%; */
-    min-width: 50vw;
+    width: 100%;
+    min-width: 0;
+
     padding: 0.5em;
-    overflow: hidden;
+
+    overflow: visible;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -222,8 +224,12 @@ code {
     position: relative;
     width: 100%;
     min-width: 0;
-    overflow: hidden;
+
     border-radius: 12px;
+}
+
+#plotContainer2D {
+    overflow: visible;
 }
 
 /*
@@ -232,6 +238,8 @@ code {
 #plotContainer3D {
     height: clamp(460px, 70vh, 760px);
     background: #ffffff;
+
+    overflow: hidden;
 }
 
 /*
@@ -422,4 +430,17 @@ code {
 
 .axis path .axis line{
     stroke:red;
+}
+
+
+.plot-section {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.plot-section[hidden] {
+    display: none !important;
 }

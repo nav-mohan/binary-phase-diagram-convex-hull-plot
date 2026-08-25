@@ -50,8 +50,8 @@ function ToggleDimension(dimension)
     __g_htmlElements["species_dropdown_3"].disabled = is2D;
     __g_htmlElements["species_dropdown_4"].disabled = true;
 
-    __g_htmlElements["plot_container_2D"].style.display = is2D ? "" : "none";
-    __g_htmlElements["plot_container_3D"].style.display = is3D ? "" : "none";
+    __g_htmlElements["plot_section_2D"].hidden = !is2D;
+    __g_htmlElements["plot_section_3D"].hidden = !is3D;
     __g_htmlElements["top_view_button"].style.display = is3D ? "" : "none";
 
     if (!is2D && !is3D) {
