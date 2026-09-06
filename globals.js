@@ -35,6 +35,14 @@ const __g_htmlElements = {
     "top_view_button": document.getElementById("topViewBtn"),
     "plot_section_2D":document.getElementById("plotSection2D"),
     "plot_section_3D":document.getElementById("plotSection3D"),
+
+
+    "popup_title" : document.getElementById('popup-title'),
+    "popup_citation" : document.getElementById('popup-citation'),
+    "popup_citation" : document.getElementById('popup-citation'),
+    "popup_description" : document.getElementById('popup-description'),
+    "popup_screen" : document.getElementById('popup-screen'),
+    "popup_close" : document.getElementById('popup-close'),
 };
 
 const __g_query_template = {

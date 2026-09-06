@@ -35,6 +35,24 @@ function SetMetaInfo(lines = []) {
     }
 }
 
+function UpdatePopup(event, title, href, citation, description)
+{
+    __g_htmlElements['popup_title'].innerText = title;
+    __g_htmlElements['popup_citation'].innerText = citation;
+    __g_htmlElements['popup_citation'].href = "https://openkim.org/id/"+href;;
+    __g_htmlElements['popup_description'].innerText = description;
+
+    __g_htmlElements["popup_screen"].style.display = "block";
+}
+
+__g_htmlElements["popup_close"].addEventListener('click',(e)=>{
+    __g_htmlElements['popup_screen'].style.display = 'none';
+})
+__g_htmlElements['popup_screen'].addEventListener('click',(e)=>{
+        if(e.target.getAttribute('id') == 'popup_screen') __g_htmlElements["popup_screen"].style.display = "none";
+;});
+
+UpdatePopup(null, "Reference Data", "datum.short_id", "datum.short_id", "datum.description")
 
 function ToggleDimension(dimension)
 {

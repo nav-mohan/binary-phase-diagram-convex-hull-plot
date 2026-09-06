@@ -444,3 +444,72 @@ code {
 .plot-section[hidden] {
     display: none !important;
 }
+
+
+/**************************************/
+/** POPUP **/
+/**************************************/
+#popup-screen
+{
+    position: fixed;
+    z-index: 50;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(2, 2, 2, 0.548);
+    display: none;
+}
+
+#popup
+{
+    position: fixed;
+    z-index: 100;
+    top: 30vh;
+    max-height: 50vh;
+    width: 95vw;
+    left: 2.5vw;
+    overflow: scroll;
+    overflow-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    background-color: #fff;
+    border: 2px solid #333333;
+    border-radius: 5px;
+}
+
+#popup-title
+{
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: 0.15em;
+}
+
+#popup-citation
+{
+    font-size: 0.8em;
+    font-weight: 400;
+    margin-bottom: 0.25em;
+}
+#popup-description
+{
+    font-size: 1em;
+    font-weight: 100;
+}
+
+#popup-close {
+    position: absolute;
+    top: -0.25em;
+    right: 0.1em;
+    background: transparent;
+    border: none;
+    font-size: 2.3em;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+
+#popup-close:hover {
+    color: red;
+}
