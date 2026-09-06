@@ -490,13 +490,15 @@ renderer.domElement.addEventListener("click", event => {
     if (markerHits.length > 0) {
         const d = markerHits[0].object.userData;
         const title = `${d.sourceName}: ${d.label}`;
+        const species_in_compound = species.filter((_, i) => d.fractions[i] >= 1e-8)
+        const href = `${d.label}/${species_in_compound.join("-")}/?mo=${__g_urlParams["model"]}`;
         const citation = `OpenKIM Prototype: ${d.label}`;
         const description = `${species[0]}: ${(100 * d.fractions[0]).toFixed(2)}%\n` +
             `${species[1]}: ${(100 * d.fractions[1]).toFixed(2)}%\n` +
             `${species[2]}: ${(100 * d.fractions[2]).toFixed(2)}%\n` +
             `Formation Energy (Hf): ${d.hf.toFixed(6)} eV/atom`;
 
-        UpdatePopup(event, title, d.label, citation, description);
+        UpdatePopup(event, title, href, citation, description);
     }
 });
 
