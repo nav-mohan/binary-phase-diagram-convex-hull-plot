@@ -95,9 +95,17 @@ function DrawPlot2D(species, model, rd, mo = null) {
         .on("mouseout", HideTooltip2D)
         .on("click", (event, d) => {
                 const title = `Reference: ${d.label}`;
+
+                const mole_fraction = d.pt[0];
+                let species_in_compound = []
+                if (mole_fraction < 1e-8){species_in_compound = species[0];} // this is a monospecies compound of species[0]
+                else if (mole_fraction > 1.0 - 1e-8){species_in_compound = species[1];}// this is a monospecie compound of species[1] 
+                else {species_in_compound = species.join("-");}
+
+                const href = `${d.label}/${species_in_compound}/?mo=${__g_urlParams["model"]}`;
                 const citation = `OpenKIM Prototype: ${d.label}`;
-                const description = `Mole fraction (${species[1]}): ${d.pt[0].toFixed(4)}\nFormation Energy (Hf): ${d.pt[1].toFixed(6)} eV/atom`;
-                UpdatePopup(event, title, d.label, citation, description);
+                const description = `Mole fraction (${species[1]}): ${mole_fraction.toFixed(4)}\nFormation Energy (Hf): ${d.pt[1].toFixed(6)} eV/atom`;
+                UpdatePopup(event, title, href, citation, description);
             });
 
     let modelStableCorrect = [];
@@ -121,9 +129,16 @@ function DrawPlot2D(species, model, rd, mo = null) {
             .on("mouseout", HideTooltip2D)
             .on("click", (event, d) => {
                         const title = `Model: ${model}`;
-                        const href = `${d.label}/Cl-Na/?mo=${model}`
+
+                const mole_fraction = d.pt[0];
+                let species_in_compound = []
+                if (mole_fraction < 1e-8){species_in_compound = species[0];} // this is a monospecies compound of species[0]
+                else if (mole_fraction > 1.0 - 1e-8){species_in_compound = species[1];}// this is a monospecie compound of species[1] 
+                else {species_in_compound = species.join("-");}
+
+                const href = `${d.label}/${species_in_compound}/?mo=${__g_urlParams["model"]}`;
                         const citation = `OpenKIM Prototype: ${d.label}`;
-                        const description = `Mole fraction (${species[1]}): ${d.pt[0].toFixed(4)}\nFormation Energy (Hf): ${d.pt[1].toFixed(6)} eV/atom`;
+                const description = `Mole fraction (${species[1]}): ${mole_fraction.toFixed(4)}\nFormation Energy (Hf): ${d.pt[1].toFixed(6)} eV/atom`;
                         UpdatePopup(event, title , href , citation, description);
                     });
 

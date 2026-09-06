@@ -51,9 +51,11 @@ function UpdatePopup(event, title, href, citation, description)
 __g_htmlElements["popup_close"].addEventListener('click',(e)=>{
     __g_htmlElements['popup_screen'].style.display = 'none';
 })
-__g_htmlElements['popup_screen'].addEventListener('click',(e)=>{
-        if(e.target.getAttribute('id') == 'popup_screen') __g_htmlElements["popup_screen"].style.display = "none";
-;});
+// Close popup when clicking anywhere on the backdrop outside #popup
+__g_htmlElements['popup_screen'].addEventListener('click', (e) => {
+        if (e.target === __g_htmlElements["popup_screen"]) {
+__g_htmlElements["popup_screen"].style.display = "none";
+};});
 
 function ToggleDimension(dimension)
 {
