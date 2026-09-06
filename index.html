@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ternary Gibbs Triangle Explorer</title>
+  <title>OpenKIM Phase Diagram Explorer</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -17,8 +17,8 @@
   </script>
 </head>
 <body>
-  <h1>Ternary Gibbs Triangle Explorer</h1>
-  <div class="subtext">Plot formation energies and lower convex-hull facets for a three-component system.</div>
+  <h1>Binary/Ternary Phase Diagram</h1>
+  <div class="subtext">Plot formation energies and lower convex-hull facets for a binary/ternary system.</div>
   <div class="layout">
     <div class="control-panel">
       <div class="controls">
@@ -112,7 +112,7 @@
   <script src="utils_chart2D.js"></script>
   <script type="module" src="ternary_app.js"></script>
   <script src="script.js"></script>
-  <script>window.addEventListener('load', () => { 
+<script>window.addEventListener('load', () => { 
     GetAllUrlParams();
     PopulateSpeciesDropdown(); 
     ToggleDimension(__g_urlParams['species'].length); 
