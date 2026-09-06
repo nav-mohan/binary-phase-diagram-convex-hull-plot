@@ -480,6 +480,26 @@ renderer.domElement.addEventListener("pointerleave", () => {
     __g_htmlElements["tooltip_3D"].style.opacity = 0;
 });
 
+renderer.domElement.addEventListener("click", event => {
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+
+    const markerHits = raycaster.intersectObjects(raycast_markers, false);
+    if (markerHits.length > 0) {
+        const d = markerHits[0].object.userData;
+        const title = `${d.sourceName}: ${d.label}`;
+        const citation = `OpenKIM Prototype: ${d.label}`;
+        const description = `${species[0]}: ${(100 * d.fractions[0]).toFixed(2)}%\n` +
+            `${species[1]}: ${(100 * d.fractions[1]).toFixed(2)}%\n` +
+            `${species[2]}: ${(100 * d.fractions[2]).toFixed(2)}%\n` +
+            `Formation Energy (Hf): ${d.hf.toFixed(6)} eV/atom`;
+
+        UpdatePopup(event, title, d.label, citation, description);
+    }
+});
+
 function Resize() {
     const width = __g_htmlElements["plot_container_3D"].clientWidth;
     const height = __g_htmlElements["plot_container_3D"].clientHeight;

@@ -92,7 +92,13 @@ function DrawPlot2D(species, model, rd, mo = null) {
         .attr("d", d3.symbol().type(d3.symbolCross).size(52))
         .on("mouseover", (event, d) => ShowTooltip2D(event, MakePointTooltip2D(d)))
         .on("mousemove", MoveTooltip2D)
-        .on("mouseout", HideTooltip2D);
+        .on("mouseout", HideTooltip2D)
+        .on("click", (event, d) => {
+                const title = `Reference: ${d.label}`;
+                const citation = `OpenKIM Prototype: ${d.label}`;
+                const description = `Mole fraction (${species[1]}): ${d.pt[0].toFixed(4)}\nFormation Energy (Hf): ${d.pt[1].toFixed(6)} eV/atom`;
+                UpdatePopup(event, title, d.label, citation, description);
+            });
 
     let modelStableCorrect = [];
     let modelStableIncorrect = [];
@@ -112,7 +118,14 @@ function DrawPlot2D(species, model, rd, mo = null) {
             .attr("d", d3.symbol().type(d3.symbolCross).size(52))
             .on("mouseover", (event, d) => ShowTooltip2D(event, MakePointTooltip2D(d)))
             .on("mousemove", MoveTooltip2D)
-            .on("mouseout", HideTooltip2D);
+            .on("mouseout", HideTooltip2D)
+            .on("click", (event, d) => {
+                        const title = `Model: ${model}`;
+                        const href = `${d.label}/Cl-Na/?mo=${model}`
+                        const citation = `OpenKIM Prototype: ${d.label}`;
+                        const description = `Mole fraction (${species[1]}): ${d.pt[0].toFixed(4)}\nFormation Energy (Hf): ${d.pt[1].toFixed(6)} eV/atom`;
+                        UpdatePopup(event, title , href , citation, description);
+                    });
 
         const rdHullProtos = PrototypeLabelsForPolygonPoints(rd.hull_points, rd.prototype_labels, rd.lowerHull);
 
