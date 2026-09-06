@@ -366,7 +366,8 @@ async function RunPlot3D() {
         __g_htmlElements["species_dropdown_2"].value,
         __g_htmlElements["species_dropdown_3"].value
     ];
-    const model = __g_htmlElements["model_textbox"].value.trim();
+    // const model = __g_htmlElements["model_textbox"].value.trim();
+    const model = __g_urlParams["model"];
 
     if (new Set(species).size !== 3) {
         SetStatusMessage("Choose three different elements.", "error");

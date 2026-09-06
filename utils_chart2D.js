@@ -194,7 +194,8 @@ async function RunPlot2D() {
         __g_htmlElements["species_dropdown_1"].value, 
         __g_htmlElements["species_dropdown_2"].value,
     ];
-    const model = __g_htmlElements["model_textbox"].value.trim();
+    // const model = __g_htmlElements["model_textbox"].value.trim();
+    const model = __g_urlParams["model"];
 
     console.log("MODEL:", model)
 

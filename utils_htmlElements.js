@@ -9,14 +9,17 @@ function PopulateSpeciesDropdown() {
         __g_htmlElements["species_dropdown_1"].append(new Option(el, el));
         __g_htmlElements["species_dropdown_2"].append(new Option(el, el));
         __g_htmlElements["species_dropdown_3"].append(new Option(el, el));
-        __g_htmlElements["species_dropdown_4"].append(new Option(el, el));
     }
     // Set default values upon initialization
-    __g_htmlElements["species_dropdown_1"].value = "Na";
-    __g_htmlElements["species_dropdown_2"].value = "Cl";
-    __g_htmlElements["species_dropdown_3"].value = "O";
-    __g_htmlElements["model_textbox"].value =
-        "Sim_LAMMPS_ReaxFF_BrugnoliMiyataniAkaji_SiCeNaClHO_2023__SM_282799919035_000"
+    if(!__g_urlParams["species"]){
+        __g_urlParams["species"] = __g_default_species; 
+    }
+    __g_htmlElements["species_dropdown_1"].value = __g_urlParams['species'][0];
+    __g_htmlElements["species_dropdown_2"].value = __g_urlParams['species'][1];
+    if(__g_urlParams.length > 2){
+        __g_htmlElements["species_dropdown_3"].value = __g_urlParams['species'][2];
+    }
+    // __g_htmlElements["model_textbox"].value = "Sim_LAMMPS_ReaxFF_BrugnoliMiyataniAkaji_SiCeNaClHO_2023__SM_282799919035_000"
 
     __g_controls_initialized = true;
 }
@@ -66,7 +69,7 @@ function ToggleDimension(dimension)
     __g_htmlElements["species_dropdown_1"].disabled = false;
     __g_htmlElements["species_dropdown_2"].disabled = false;
     __g_htmlElements["species_dropdown_3"].disabled = is2D;
-    __g_htmlElements["species_dropdown_4"].disabled = true;
+    // __g_htmlElements["species_dropdown_4"].disabled = true;
 
     __g_htmlElements["plot_section_2D"].hidden = !is2D;
     __g_htmlElements["plot_section_3D"].hidden = !is3D;
@@ -84,7 +87,7 @@ function ToggleDimension(dimension)
 function SetControlsLoading(loading) {
     __g_loading = loading;
     __g_htmlElements["plot_button"].disabled = loading;
-    __g_htmlElements["model_textbox"].disabled = loading;
+    // __g_htmlElements["model_textbox"].disabled = loading;
 
     document.querySelectorAll('input[name="toggle-dimension"]').forEach((radio) => {
         radio.disabled = loading || radio.value === "4";

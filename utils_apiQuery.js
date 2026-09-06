@@ -1,3 +1,30 @@
+function GetAllUrlParams() 
+{
+    // FIRST, RESET ALL THE MEMBERS OF THE GLOBAL VARIABLE __g_urlParams
+    __g_urlParams["model"] = "";
+    __g_urlParams["species"] = [];
+
+    // NEXT, BEGIN PARSING THROUGH THE URL AND COLLECT THE QUERY-PARAMETERS
+    const urlObj = new URL(window.location);
+    let result = {};
+    urlObj.searchParams.forEach((value, key) => 
+    {
+        const decodedValue = decodeURIComponent(value);
+        try 
+        {
+            result[key] = JSON.parse(decodedValue);
+        } 
+        catch (e) 
+        {
+            result[key] = decodedValue;
+        }
+    });
+    
+    // FINALLY, SET THE VALUES FOR THE GLOBAL VARIABLE __g_urlParams
+    __g_urlParams["model"] = result["model"];
+    __g_urlParams["species"] = result["species"];
+}
+
 /**
  * 
  * @param {Array} species_list 

@@ -1,3 +1,6 @@
+const __g_default_model = "Sim_LAMMPS_ReaxFF_BrugnoliMiyataniAkaji_SiCeNaClHO_2023__SM_282799919035_000";
+const __g_default_species = ["Na","Cl","O"];
+
 const ELEMENTS = [
     "H","He","Li","Be","B","C","N","O","F","Ne",
     "Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca",
@@ -16,10 +19,10 @@ const __g_htmlElements = {
     "species_dropdown_1": document.getElementById("species1"),
     "species_dropdown_2": document.getElementById("species2"),
     "species_dropdown_3": document.getElementById("species3"),
-    "species_dropdown_4": document.getElementById("species4"),
-    "model_textbox": document.getElementById("model"),
+    // "species_dropdown_4": document.getElementById("species4"),
+    // "model_textbox": document.getElementById("model"),
     "plot_button": document.getElementById("plotBtn"),
-    "clear_model_button": document.getElementById("clearModelBtn"),
+    // "clear_model_button": document.getElementById("clearModelBtn"),
     "status_textbox": document.getElementById("status"),
     "meta_textbox": document.getElementById("meta"),
 
@@ -58,4 +61,10 @@ const __g_fields = {
     "prototype-label.source-value":1,
     "stoichiometric-species.source-value":1,
     "binding-potential-energy-per-formula.source-value":1
+}
+
+
+const __g_urlParams = {
+    "model" : "",
+    "species" : [],
 }

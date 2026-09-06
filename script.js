@@ -86,10 +86,10 @@ function PrototypeLabelsForPolygonPoints(records_points, records_prototype_label
 }
 
 __g_htmlElements["plot_button"].addEventListener("click", RunPlot);
-__g_htmlElements["clear_model_button"].addEventListener("click", () => {
-    __g_htmlElements["model_textbox"].value = "";
-    SetStatusMessage("Model field cleared.", "");
-});
+// __g_htmlElements["clear_model_button"].addEventListener("click", () => {
+    // __g_htmlElements["model_textbox"].value = "";
+    // SetStatusMessage("Model field cleared.", "");
+// });
 
 
 
@@ -408,7 +408,7 @@ async function GenerateBestHull(model){
      * 3. Populate the UI
      * ------------------------------------------------------------
      */
-    document.getElementById("model").value = model;
+    // document.getElementById("model").value = model;
     document.getElementById("species1").value = species_list[0] ?? "";
     document.getElementById("species2").value = species_list[1] ?? "";
     document.getElementById("species3").value = species_list[2] ?? "";
