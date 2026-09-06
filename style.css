@@ -110,7 +110,13 @@ h1 {
 .row {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 0.625em;
+    width: 100%;
+}
+
+.row > button {
+    flex: 1;
+    min-width: 0;
 }
 
 label {
@@ -314,8 +320,8 @@ code {
 .legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
-    padding: 8px 4px 0;
+    gap: 1em;
+    padding: 0 0 1em 0;
     font-size: 12px;
     color: var(--muted);
 }
@@ -333,71 +339,95 @@ code {
 /* Responsive layout                                                          */
 /* -------------------------------------------------------------------------- */
 
-@media (max-width: 920px) {
-    .page {
-        padding: 16px;
+@media (min-width: 80em) {
+    .layout {
+        max-width: 75em;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .plot-panel {
+        max-width: 60em;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #plotContainer3D {
+        height: clamp(25em, 50vh, 37.5em);
+    }
+}
+
+@media (max-width: 57.5em) {
+    body {
+        padding: 0.75em;
     }
 
     h1 {
-        font-size: 24px;
+        font-size: 1.5em;
     }
 
-    /*
-     * Mobile/tablet layout:
-     * controls on top, plot below.
-     */
     .layout {
         flex-direction: column;
     }
 
-    .layout > .panel:first-child,
+    .control-panel {
+        flex-direction: column;
+        width: 100%;
+        padding: 1em;
+    }
+
+    .controls,
+    .status-meta {
+        width: 100%;
+        padding: 0.75em;
+    }
+
     .plot-panel {
         width: 100%;
-        min-width: 0;
-        flex: none;
-        padding: 10px;
+        padding: 0.5em;
     }
 
     #plotContainer3D {
-        height: clamp(400px, 60vh, 620px);
+        height: clamp(25em, 60vh, 38.75em);
     }
 
     #plot2D {
-        min-height: 420px;
+        min-height: 26.25em;
     }
 }
 
-@media (max-width: 640px) {
-    .page {
-        padding: 12px;
+@media (max-width: 40em) {
+    body {
+        padding: 0.5em;
     }
 
-    .panel {
-        padding: 14px;
-        border-radius: 14px;
+    .control-panel {
+        padding: 0.75em;
+        border-radius: 0.875em;
     }
 
     .species-row {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        flex-direction: column;
+        gap: 0.5em;
     }
 
     .row {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        gap: 0.5em;
     }
 
     #plotContainer3D {
-        height: clamp(360px, 58vh, 560px);
+        height: clamp(22.5em, 58vh, 35em);
     }
 
     #plot2D {
-        min-height: 360px;
+        min-height: 22.5em;
     }
 
     .vertex-label {
-        font-size: 13px;
+        font-size: 0.8125em;
     }
 }
-
 
 
 .stable-incorrect{
@@ -414,6 +444,7 @@ code {
 
 .pt-model{
     fill: red;
+    z-index:1000;
 }
 .hull-model{
     fill:none;
@@ -422,6 +453,7 @@ code {
 
 .pt-rd{
     fill:green;
+    z-index:1000;
 }
 .hull-rd{
     fill: none;
@@ -445,71 +477,88 @@ code {
     display: none !important;
 }
 
-
 /**************************************/
 /** POPUP **/
 /**************************************/
-#popup-screen
-{
+#popup-screen {
     position: fixed;
-    z-index: 50;
-    left: 0;
-    top: 0;
+    z-index: 100;
+    inset: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(2, 2, 2, 0.548);
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
     display: none;
 }
 
-#popup
-{
+#popup {
     position: fixed;
-    z-index: 100;
-    top: 30vh;
-    max-height: 50vh;
-    width: 95vw;
-    left: 2.5vw;
-    overflow: scroll;
-    overflow-wrap: break-word;
+    z-index: 101;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 520px;
+    max-height: 80vh;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    padding: 1em;
-    background-color: #fff;
-    border: 2px solid #333333;
-    border-radius: 5px;
+    gap: 10px;
+    overflow-y: auto;
 }
 
-#popup-title
-{
-    font-size: 1em;
-    font-weight: 600;
-    margin-bottom: 0.15em;
+#popup-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    padding-right: 36px; /* Space for top-right close button */
+    margin: 0;
 }
 
-#popup-citation
-{
-    font-size: 0.8em;
-    font-weight: 400;
-    margin-bottom: 0.25em;
+#popup-citation {
+    font-size: 0.875rem;
+    color: var(--accent);
+    text-decoration: none;
+    word-break: break-all;
 }
-#popup-description
-{
-    font-size: 1em;
-    font-weight: 100;
+
+#popup-citation:hover {
+    text-decoration: underline;
+}
+
+#popup-description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text);
+    white-space: pre-line; /* Preserves multiline formatting */
+    margin-top: 4px;
 }
 
 #popup-close {
     position: absolute;
-    top: -0.25em;
-    right: 0.1em;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: transparent;
     border: none;
-    font-size: 2.3em;
-    font-weight: bold;
-    color: #333;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--muted);
     cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 #popup-close:hover {
-    color: red;
+    background-color: #f3f4f6;
+    color: var(--danger);
 }
