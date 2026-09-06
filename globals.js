@@ -1,6 +1,9 @@
 const __g_default_model = "Sim_LAMMPS_ReaxFF_BrugnoliMiyataniAkaji_SiCeNaClHO_2023__SM_282799919035_000";
 const __g_default_species = ["Na","Cl","O"];
 
+// EXAMPLE URL 
+// http://localhost:8000/?model="Sim_LAMMPS_ReaxFF_BrugnoliMiyataniAkaji_SiCeNaClHO_2023__SM_282799919035_000"&species=["Na","Ce","Cl"]
+
 const ELEMENTS = [
     "H","He","Li","Be","B","C","N","O","F","Ne",
     "Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca",
