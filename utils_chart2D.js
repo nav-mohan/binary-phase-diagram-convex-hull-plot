@@ -128,7 +128,7 @@ function DrawPlot2D(species, model, rd, mo = null) {
             .on("mousemove", MoveTooltip2D)
             .on("mouseout", HideTooltip2D)
             .on("click", (event, d) => {
-                        const title = `Model: ${model}`;
+                const title = `Model: ${model}`;
 
                 const mole_fraction = d.pt[0];
                 let species_in_compound = []
@@ -137,10 +137,10 @@ function DrawPlot2D(species, model, rd, mo = null) {
                 else {species_in_compound = species.join("-");}
 
                 const href = `${d.label}/${species_in_compound}/?mo=${__g_urlParams["model"]}`;
-                        const citation = `OpenKIM Prototype: ${d.label}`;
+                const citation = `OpenKIM Prototype: ${d.label}`;
                 const description = `Mole fraction (${species[1]}): ${mole_fraction.toFixed(4)}\nFormation Energy (Hf): ${d.pt[1].toFixed(6)} eV/atom`;
-                        UpdatePopup(event, title , href , citation, description);
-                    });
+                UpdatePopup(event, title , href , citation, description);
+            });
 
         const rdHullProtos = PrototypeLabelsForPolygonPoints(rd.hull_points, rd.prototype_labels, rd.lowerHull);
 
@@ -182,8 +182,7 @@ function DrawPlot2D(species, model, rd, mo = null) {
             .attr("r", 5);
     }
 
-    const legend_box = __g_htmlElements["svg"].append("g")
-        .attr("transform", `translate(${10},${height - 10})`);
+    const legend2D = d3.select("#legend2D").html("");
 
     const legend_items = mo ? [
         { label: "IP calculations", shape: "cross", cls: "pt-model" },
@@ -194,25 +193,31 @@ function DrawPlot2D(species, model, rd, mo = null) {
         { label: "Reference calculations", shape: "cross", cls: "pt-rd" }
     ];
 
+    legend_items.forEach(legend_item => {
+        const itemSpan = legend2D.append("span")
+            .style("display", "inline-flex")
+            .style("align-items", "center")
+            .style("gap", "6px");
 
-    legend_items.forEach((legend_item, i) => {
-        const row = legend_box.append("g").attr("transform", `translate(0,${i * 22})`);
+        const iconSvg = itemSpan.append("svg")
+            .attr("width", 16)
+            .attr("height", 16)
+            .attr("viewBox", "0 0 16 16");
+
         if (legend_item.shape === "cross") {
-            row.append("path")
+            iconSvg.append("path")
                 .attr("class", legend_item.cls)
                 .attr("transform", "translate(8,8)")
                 .attr("d", d3.symbol().type(d3.symbolCross).size(52));
         } else {
-            row.append("circle")
+            iconSvg.append("circle")
                 .attr("class", legend_item.cls)
                 .attr("cx", 8)
                 .attr("cy", 8)
                 .attr("r", 5);
         }
-        row.append("text")
-            .attr("x", 22)
-            .attr("y", 12)
-            .text(legend_item.label);
+
+        itemSpan.append("span").text(legend_item.label);
     });
 }
 
