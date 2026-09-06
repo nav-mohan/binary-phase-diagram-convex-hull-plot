@@ -10,16 +10,24 @@ function PopulateSpeciesDropdown() {
         __g_htmlElements["species_dropdown_2"].append(new Option(el, el));
         __g_htmlElements["species_dropdown_3"].append(new Option(el, el));
     }
-    // Set default values upon initialization
-    if(!__g_urlParams["species"]){
+    // Set default values if species param is missing or empty
+    if (!__g_urlParams["species"] || !Array.isArray(__g_urlParams["species"]) || __g_urlParams["species"].length === 0) {
         __g_urlParams["species"] = __g_default_species; 
     }
-    __g_htmlElements["species_dropdown_1"].value = __g_urlParams['species'][0];
-    __g_htmlElements["species_dropdown_2"].value = __g_urlParams['species'][1];
-    if(__g_urlParams.length > 2){
+
+    if (__g_urlParams['species'][0]) {
+        __g_htmlElements["species_dropdown_1"].value = __g_urlParams['species'][0];
+    }
+    if (__g_urlParams['species'][1]) {
+        __g_htmlElements["species_dropdown_2"].value = __g_urlParams['species'][1];
+    }
+    if (__g_urlParams['species'].length > 2 && __g_urlParams['species'][2]) {
         __g_htmlElements["species_dropdown_3"].value = __g_urlParams['species'][2];
     }
-    // __g_htmlElements["model_textbox"].value = "Sim_LAMMPS_ReaxFF_BrugnoliMiyataniAkaji_SiCeNaClHO_2023__SM_282799919035_000"
+
+    __g_htmlElements["species_dropdown_1"].addEventListener("change", SetAllUrlParams);
+    __g_htmlElements["species_dropdown_2"].addEventListener("change", SetAllUrlParams);
+    __g_htmlElements["species_dropdown_3"].addEventListener("change", SetAllUrlParams);
 
     __g_controls_initialized = true;
 }
@@ -53,8 +61,8 @@ __g_htmlElements["popup_close"].addEventListener('click',(e)=>{
 })
 // Close popup when clicking anywhere on the backdrop outside #popup
 __g_htmlElements['popup_screen'].addEventListener('click', (e) => {
-        if (e.target === __g_htmlElements["popup_screen"]) {
-__g_htmlElements["popup_screen"].style.display = "none";
+    if (e.target === __g_htmlElements["popup_screen"]) {
+            __g_htmlElements["popup_screen"].style.display = "none";
 };});
 
 function ToggleDimension(dimension)
@@ -66,17 +74,22 @@ function ToggleDimension(dimension)
     // Sync species URL parameter and __g_urlParams based on new dimension
     SetAllUrlParams();
 
+    // Sync the radio button state with the selected dimension
+    const radio = document.querySelector(`input[name="toggle-dimension"][value="${__g_active_dimension}"]`);
+    if (radio) {radio.checked = true;}
+
     const is2D = __g_active_dimension === 2;
     const is3D = __g_active_dimension === 3;
 
     __g_htmlElements["species_dropdown_1"].disabled = false;
     __g_htmlElements["species_dropdown_2"].disabled = false;
     __g_htmlElements["species_dropdown_3"].disabled = is2D;
-    // __g_htmlElements["species_dropdown_4"].disabled = true;
 
     __g_htmlElements["plot_section_2D"].hidden = !is2D;
     __g_htmlElements["plot_section_3D"].hidden = !is3D;
-    __g_htmlElements["top_view_button"].style.display = is3D ? "" : "none";
+    
+    __g_htmlElements["top_view_button"].style.visibility = is3D ? "visible" : "hidden";
+    __g_htmlElements["top_view_button"].style.display = "block";
 
     if (!is2D && !is3D) {
         SetStatusMessage("A quaternary plot view has not been implemented.", "error");
