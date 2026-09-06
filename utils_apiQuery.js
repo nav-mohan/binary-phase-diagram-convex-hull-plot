@@ -22,9 +22,28 @@ function GetAllUrlParams()
     
     // FINALLY, SET THE VALUES FOR THE GLOBAL VARIABLE __g_urlParams
     __g_urlParams["model"] = result["model"];
-    __g_urlParams["species"] = result["species"];
+    __g_urlParams["species"] = result["species"].toSorted();
 }
 
+// when the Species dropdown is toggled, change the __g_urlParams["species"]
+function SetAllUrlParams() {
+    const s1 = __g_htmlElements["species_dropdown_1"].value;
+    const s2 = __g_htmlElements["species_dropdown_2"].value;
+    const s3 = __g_htmlElements["species_dropdown_3"].value;
+
+    // Build the species array according to the active dimension
+    const species = [s1, s2];
+    if (__g_active_dimension === 3 && s3) {species.push(s3);}
+
+    // 1. Update global state object
+    __g_urlParams["species"] = species.toSorted();
+
+    // 2. Update browser address bar without reloading the page
+    const url = new URL(window.location);
+    url.searchParams.set("species", JSON.stringify(__g_urlParams["species"]));
+
+    window.history.replaceState({}, "", url);
+}
 /**
  * 
  * @param {Array} species_list 

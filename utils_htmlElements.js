@@ -63,6 +63,9 @@ function ToggleDimension(dimension)
 
     __g_active_dimension = Number(dimension);
 
+    // Sync species URL parameter and __g_urlParams based on new dimension
+    SetAllUrlParams();
+
     const is2D = __g_active_dimension === 2;
     const is3D = __g_active_dimension === 3;
 
