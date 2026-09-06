@@ -100,7 +100,7 @@ function RunPlot()
     console.log("RunPlot");
     
     // Display 2D plot
-    if(__g_htmlElements["species_dropdown_3"].disabled && __g_htmlElements["species_dropdown_4"].disabled)
+    if(__g_htmlElements["species_dropdown_3"].disabled)
     {
         // hide 3D plot
         __g_htmlElements["plot_container_3D"].style.display = "none";
@@ -118,7 +118,7 @@ function RunPlot()
     }
     
     // Display 3D plot
-    else if(!__g_htmlElements["species_dropdown_3"].disabled && __g_htmlElements["species_dropdown_4"].disabled)
+    else if(!__g_htmlElements["species_dropdown_3"].disabled)
     {
 
         // show 3D plot
@@ -137,7 +137,7 @@ function RunPlot()
     }
 
     // Display 4D plot
-    else if(!__g_htmlElements["species_dropdown_3"].disabled && !__g_htmlElements["species_dropdown_4"].disabled)
+    else if(!__g_htmlElements["species_dropdown_3"].disabled)
     {
 
         // show 3D plot

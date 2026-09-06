@@ -97,7 +97,6 @@ function SetControlsLoading(loading) {
         __g_htmlElements["species_dropdown_1"].disabled = true;
         __g_htmlElements["species_dropdown_2"].disabled = true;
         __g_htmlElements["species_dropdown_3"].disabled = true;
-        __g_htmlElements["species_dropdown_4"].disabled = true;
     } else {
         ToggleDimension(__g_active_dimension);
     }
