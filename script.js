@@ -24,7 +24,23 @@ async function GetFormationEnergies(species_list, model = null) {
         }
     }
     */
-    const records = await DoApiQueryFormationEnergy(species_list, model);
+    // const records = await DoApiQueryFormationEnergy(species_list, model);
+    const species_set = new Set(species_list)
+    let records = []
+    if (model != null && model.length > 0)
+    {
+        records = __g_data['tr-formation-energies'].filter((e) => {
+            const record_species_set = new Set(e['stoichiometric-species']['source-value'])
+            return record_species_set.isSubsetOf(species_set);
+        });       
+    }
+    else 
+    {
+        records = __g_data['rd-formation-energies'].filter((e) => {
+            const record_species_set = new Set(e['stoichiometric-species']['source-value'])
+            return record_species_set.isSubsetOf(species_set);
+        });
+    }
 
     // find the record corresponding to minimum energy of mono-species system
     const [monospecies_min_energies, monospecies_min_energy_idx] = FindMonoSpeciesMinEnergyIdx(records, species_list);
