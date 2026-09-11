@@ -113,10 +113,7 @@
   <script type="module" src="ternary_app.js"></script>
   <script src="script.js"></script>
 <script>window.addEventListener('load', () => { 
-    GetAllUrlParams();
-    PopulateSpeciesDropdown(); 
-    ToggleDimension(__g_urlParams['species'].length); 
-    RunPlot();
+    OnFirstLoad();
     });</script>
 </body>
 </html>

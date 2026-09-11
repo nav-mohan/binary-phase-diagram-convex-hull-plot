@@ -1,3 +1,13 @@
+async function OnFirstLoad()
+{
+    GetAllUrlParams();
+    await DoGiantApiQuery(__g_urlParams["model"]);
+    // PopulateSpeciesDropdown(); 
+    // ToggleDimension(__g_urlParams['species'].length); 
+    // RunPlot();
+    GenerateBestHull(__g_urlParams['model'])
+}
+
 /**
  * Does an API query. Can be reused for N-ary phase-diagrams
  * @param {Array} species_list 
