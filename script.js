@@ -417,6 +417,11 @@ async function GenerateBestHull(model){
 
     if (species_list.length < 2) {throw new Error(`Could not find a suitable species combination for model: ${model}`);}
 
+    __g_urlParams['species'] = species_list;
+    PopulateSpeciesDropdown(); 
+    ToggleDimension(__g_urlParams['species'].length); 
+
+
     console.log("Selected species:", species_list);
 
     /*
@@ -431,34 +436,9 @@ async function GenerateBestHull(model){
 
     /*
      * ------------------------------------------------------------
-     * 4. Select dimensionality
-     * ------------------------------------------------------------
-     */
-    const dimension = species_list.length;
-
-    const radio = document.querySelector(`input[name="toggle-dimension"][value="${dimension}"]`);
-
-    if (!radio) {throw new Error(`Could not find dimension selector for ${dimension}D`);}
-
-    radio.checked = true;
-
-    ToggleDimension(dimension);
-
-    /*
-     * ------------------------------------------------------------
      * 5. Render the plot
      * ------------------------------------------------------------
      */
-    if (dimension === 2) {
-        await RunPlot2D();
-    }
-    else if (dimension === 3) {
-        await RunPlot3D();
-        ShowTopView();
-    }
-    else {
-        throw new Error(`Unsupported thumbnail dimension: ${dimension}`);
-    }
-    return species_list;
+    RunPlot();
 
 }
