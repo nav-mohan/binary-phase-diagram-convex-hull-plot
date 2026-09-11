@@ -237,7 +237,7 @@ function GetCombinations(array, k) {
 }
 
 async function FindBestCombination(model){
-    const supported_species = GetModelSupportedSpecies(model);
+    const supported_species = __g_data['model-supported-species']
 
     let best_combination = [];
     if (supported_species.length == 2) {best_combination = supported_species}
@@ -254,33 +254,6 @@ async function FindBestCombination(model){
     }
     return best_combination;
 }
-
-function GetModelSupportedSpecies(modelName) {
-  // Step 1: Clean the name to easily isolate the middle sections
-  // Removes the prefix 'Sim_LAMMPS_' and the suffix starting with '__SM_'
-  const core = modelName.replace(/^Sim_LAMMPS_[^_]+_[^_]+_/, '').split('__SM_')[0];
-  
-  // Step 2: Split the remaining parts by underscores
-  const parts = core.split('_');
-  
-  // Step 3: Identify the chemical formula part
-  // The species string contains text but is NOT a 4-digit year
-  const formula = parts.find(part => isNaN(part) || part.length !== 4);
-  
-  if (!formula) return [];
-
-  // Step 4: Match individual chemical elements (e.g., 'Si', 'Ce', 'Na', 'Cl', 'H', 'O')
-  // This matches a capital letter followed by any lowercase letters
-  return formula.match(/[A-Z][a-z]*/g) || [];
-}
-
-// --- Test Cases ---
-const examples = [
-  "Sim_LAMMPS_ReaxFF_BrugnoliMiyataniAkaji_SiCeNaClHO_2023__SM_282799919035_000",
-  "Sim_LAMMPS_ReaxFF_BroqvistKullgrenWolf_2015_CeO__SM_063950220736_000",
-  "Sim_LAMMPS_ReaxFF_AryanpourVanDuinKubicki_2010_FeHO__SM_222964216001_001",
-  "Sim_LAMMPS_CoreShell_MitchellFincham_1993_NaCl__SM_672022050407_000"
-];
 
 async function ExportPlotAsPNG(filename = "phase-diagram.png",plotType = "auto") {
     let container;
@@ -412,7 +385,7 @@ async function GenerateBestHull(model){
      * 1. Determine which species the model supports
      * ------------------------------------------------------------
      */
-    const supported_species = GetModelSupportedSpecies(model);
+    const supported_species = __g_data['model-supported-species'];
 
     if (supported_species.length < 2) {
         throw new Error(`Model must support at least 2 species. Found: ${supported_species.join(", ")}`);

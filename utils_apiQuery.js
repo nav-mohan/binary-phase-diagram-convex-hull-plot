@@ -97,7 +97,6 @@ async function DoGiantApiQuery(model_name)
     if (model_name)
     {
         model_supported_species = await QueryGetModelSupportedSpecies(model_name);
-        console.log("GiantQuery Supported Model",model_supported_species)
         await DoGiantApiQueryTR(model_name, model_supported_species);
     }
     else 
