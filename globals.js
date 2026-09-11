@@ -71,3 +71,9 @@ const __g_urlParams = {
     "model" : "",
     "species" : [],
 }
+
+const __g_data = {
+    "model-supported-species" : [],
+    "tr-formation-energies" : [],
+    "rd-formation-energies" : [],
+}
