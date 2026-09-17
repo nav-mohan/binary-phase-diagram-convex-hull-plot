@@ -431,15 +431,17 @@ code {
 
 
 .stable-incorrect{
-    fill: red;
-    stroke-width: 0.7;
-    stroke: pink;
+    fill:none;
+    stroke-width:2;
+    stroke: yellow;
+    opacity:0.6;
 }
 
 .stable-correct{
-    fill: yellow;
-    stroke-width: 0.7;
-    stroke: green;
+    fill:none;
+    stroke-width: 2;
+    stroke: blue;
+    opacity:0.6;
 }
 
 .pt-model{
