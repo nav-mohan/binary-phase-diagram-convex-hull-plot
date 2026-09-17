@@ -490,7 +490,8 @@ renderer.domElement.addEventListener("click", event => {
     if (markerHits.length > 0) {
         const d = markerHits[0].object.userData;
         const title = `${d.sourceName}: ${d.label}`;
-        const species_in_compound = species.filter((_, i) => d.fractions[i] >= 1e-8)
+        let species_in_compound = species.filter((_, i) => d.fractions[i] >= 1e-8);
+        species_in_compound = species_in_compound.sort();
         const href = `${d.label}/${species_in_compound.join("-")}/?mo=${__g_urlParams["model"]}`;
         const citation = `OpenKIM Prototype: ${d.label}`;
         const description = `${species[0]}: ${(100 * d.fractions[0]).toFixed(2)}%\n` +
